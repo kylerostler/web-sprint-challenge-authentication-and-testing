@@ -2,7 +2,7 @@ const router = require('express').Router();
 const { checkRegPayload, 
         checkUsernameAvailable, 
         checkUsernameExists } 
-        = require('../middleware/auth-middleware')
+        = require('../middleware/restricted')
 
 const User = require('../users/users-model')
 const bcrypt = require('bcryptjs/dist/bcrypt')
