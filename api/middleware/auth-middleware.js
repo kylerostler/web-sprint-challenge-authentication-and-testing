@@ -29,7 +29,7 @@ const restricted = (req, res, next) => {
 };
 
 const checkRegPayload = (req, res, next) => {
-  if (!req.body.username.trim() || !req.body.password.trim()) {
+  if (!req.body.username || !req.body.password) {
     next({ status: 422, message: 'username and password required'})
   } else {
     next()
