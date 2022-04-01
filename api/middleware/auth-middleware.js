@@ -1,5 +1,6 @@
 const { JWT_SECRET } = require('../secrets')
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const { findBy } = require('../users/users-model')
 
 const restricted = (req, res, next) => {
   /*
@@ -27,4 +28,26 @@ const restricted = (req, res, next) => {
       })
 };
 
-module.exports = restricted
+const checkRegPayload = (req, res, next) => {
+  if (!req.body.username.trim() || !req.body.password.trim()) {
+    next({ status: 422, message: 'username and password required'})
+  } else {
+    next()
+  }
+}
+
+const checkUsernameAvailable = async (req, res, next) => {
+  try {
+    const [user] = await findBy({ username: req.body.username})
+    if(!user) {
+      req.user = user
+      next()
+    } else {
+      next({ status: 401, message: 'username taken'})
+    }
+  } catch (err) {
+    next(err)
+  }
+}
+
+module.exports = { restricted, checkRegPayload, checkUsernameAvailable }
