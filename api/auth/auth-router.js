@@ -1,7 +1,6 @@
 const router = require('express').Router();
 const { checkRegPayload, 
         checkUsernameAvailable, 
-        restricted, 
         checkUsernameExists } 
         = require('../middleware/auth-middleware')
 
