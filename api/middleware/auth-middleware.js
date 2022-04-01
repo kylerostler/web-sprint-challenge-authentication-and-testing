@@ -50,4 +50,18 @@ const checkUsernameAvailable = async (req, res, next) => {
   }
 }
 
-module.exports = { restricted, checkRegPayload, checkUsernameAvailable }
+const checkUsernameExists = async (req, res, next) => {
+  try {
+    const [user] = await findBy({ username: req.body.username})
+    if(user) {
+      req.user = user
+      next()
+    } else {
+      next({ status: 401, message: 'invalid credentials'})
+    }
+  } catch (err) {
+    next(err)
+  }
+}
+
+module.exports = { restricted, checkRegPayload, checkUsernameAvailable, checkUsernameExists }
